@@ -1,0 +1,146 @@
+# java2
+MadLibs
+// NanWang HW10
+package madLib;
+import java.io.*;
+import java.util.*;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+public class MadLib extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUIaD = 1L;
+	ArrayList<String> list = new ArrayList<String>();
+
+
+     public MadLib(){
+    			 readFile();
+    			 if(!list.isEmpty()){
+    				 play();
+    			 }
+    	         dispose();
+     }
+     
+     public void readFile()  {
+    	 JFileChooser chooser = new JFileChooser();
+    	 FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+    	 chooser.setFileFilter(filter);
+    	 chooser.setDialogTitle("Load which file?");
+ 		int returnVal = chooser.showOpenDialog(this);
+ 		if (returnVal == JFileChooser.APPROVE_OPTION) {
+ 			File file = chooser.getSelectedFile();
+ 			if (file != null) {
+ 				String fileName = "";
+ 	 			try{fileName = file.getCanonicalPath();}
+ 	 			catch(IOException e1){
+ 	 	    		System.out.println("No file has been selected!");}
+ 	 			FileReader fileReader = null;
+ 	 			try{
+ 	 				fileReader = new FileReader(fileName);
+ 	 			}
+ 	 			catch (FileNotFoundException e2) {
+ 	 				System.err.println
+ 	 				("LineReader can’t find input file: " + fileName);
+ 	 				e2.printStackTrace( ); }
+ 	 			BufferedReader bufferedReader = new BufferedReader(fileReader);
+ 	 			String line = null;
+ 	 			try{
+ 	 				line = bufferedReader.readLine();
+ 	 			}catch(IOException e3) { 
+ 	 				e3.printStackTrace( );
+ 	 			}
+ 	 			while (line != null) {
+ 	 				list.add(line);
+ 	 				try{line = bufferedReader.readLine();}
+ 	 				catch(IOException e4) { 
+ 	 	 				e4.printStackTrace( );
+ 	 	 			}
+ 	 			}
+ 	 			try{fileReader.close();
+ 	 			}catch(IOException e5) { }
+ 		}
+ 			} else if (returnVal == JFileChooser.CANCEL_OPTION) {
+ 			System.out.println("No file has been selected!");
+ 		} else{
+ 			System.out.println("No file has been selected!");
+ 		}
+ 		pack();
+ 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+ 		}
+     
+ 	public static ArrayList<String> textWithinBrackets(ArrayList<String> ls){
+ 		ArrayList<String> textList = new ArrayList<String>();
+ 		for(int i = 0; i < ls.size(); i++){
+ 			String singleLine = ls.get(i);
+ 		 for(int j = 0; j < singleLine.length(); j++){
+ 			    if('[' ==singleLine.charAt(j)){
+ 				int endBracket = singleLine.indexOf("]", j);
+ 				textList.add(singleLine.substring(j + 1, endBracket));
+ 			}
+ 		}
+ 	}
+ 		return textList;
+ 	}
+ 	
+ 	public static void replaceArrayList(ArrayList<String> ls, String replaceWord){
+ 		for(int i = 0; i < ls.size(); i++){
+ 			String singleLine = ls.get(i);
+ 			 if(singleLine.indexOf("[") != -1){
+ 				int startBracket = singleLine.indexOf("[");
+ 				int endBracket = singleLine.indexOf("]");
+ 				String newLine = singleLine.substring(0, startBracket) + replaceWord + singleLine.substring(endBracket + 1, singleLine.length());
+ 				ls.set(i, newLine);
+ 				break;
+ 			}
+ 		}
+ 	}
+ 	
+ 	public static String ifIsVowel(String text){
+ 		String vowel = "aeiou";
+ 		text = text.toLowerCase();
+ 		if(vowel.indexOf(text.charAt(0)) != -1){
+ 			return "Enter an";	
+ 		}else{
+ 			return "Enter a";
+ 		}
+ 	}
+ 	
+ 	public void play(){
+ 		System.out.println("Fill in the blanks to get an exciting story!");
+ 		List<String> textList = textWithinBrackets(list);
+ 		for(int i = 0; i < textList.size(); i++){
+ 			System.out.println(ifIsVowel(textList.get(i)) + " " + textList.get(i) + ": ");
+ 			String replaceWord = ask();
+ 			replaceArrayList(list, replaceWord);
+ 		}
+ 		System.out.println("");
+ 		
+ 		for(int j = 0; j < list.size(); j++){
+ 			System.out.println(list.get(j));
+ 		}
+ 	}
+ 	
+ 	public String ask(){
+ 		Scanner scanner = new Scanner(System.in);
+ 		String str = "";
+ 		str = scanner.nextLine();
+ 		str = str.trim();
+ 		while (str.equals("")){
+ 			System.out.println("Please type in an answer!");
+ 			str = scanner.nextLine();
+ 			str = str.trim();
+ 		}
+ 		return str;
+ 	}
+ 	
+ 	public static void main(String[] args) {
+ 		new MadLib();
+ 	}
+
+ }
+
+
