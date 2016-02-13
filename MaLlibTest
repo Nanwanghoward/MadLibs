@@ -1,0 +1,56 @@
+# java2
+MadLibs
+// NanWang HW10
+package madLib;
+
+import java.io.*;
+import java.util.*;
+import org.junit.Before;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class MadLibTest {
+	
+	ArrayList<String> list = new ArrayList<String>();
+	@Before
+	public void setUp() throws Exception{
+	list.add("Nan Wang is really [feeling] to get [number] dollars from her father.");
+	list.add("[feeling] thing is, Nan Wang feels so sleepy in the class,[adjective].");		
+	list.add("Nan Wang needs some new clothes and shoes.");
+	}
+	@Test
+	public void testtextWithinBrackets() {
+		ArrayList<String> textList = MadLib.textWithinBrackets(list);
+        assertEquals(textList.get(0),"feeling");
+		assertEquals(textList.get(1),"number");
+		assertEquals(textList.get(2),"feeling");
+		assertEquals(textList.get(3),"adjective");
+	}
+	
+	@Test
+	public void testreplaceArrayList(){
+		MadLib.replaceArrayList(list,"excited");
+		assertEquals(list.get(0),"Nan Wang is really excited to get [number] dollars from her father.");
+		MadLib.replaceArrayList(list,"100,000");
+		assertEquals(list.get(0),"Nan Wang is really excited to get 100,000 dollars from her father.");
+		MadLib.replaceArrayList(list,"Sad");
+		assertEquals(list.get(1),"Sad thing is, Nan Wang feels so sleepy in the class,[adjective].");
+		MadLib.replaceArrayList(list,"exhausted");
+		assertEquals(list.get(1),"Sad thing is, Nan Wang feels so sleepy in the class,exhausted.");
+	}
+	
+	@Test
+	public void testifIsVowel(){
+		ArrayList<String> textList = MadLib.textWithinBrackets(list);
+		assertEquals(MadLib.ifIsVowel(textList.get(0)),"Enter a");
+		assertEquals(MadLib.ifIsVowel(textList.get(1)),"Enter a");
+		assertEquals(MadLib.ifIsVowel(textList.get(2)),"Enter a");
+		assertEquals(MadLib.ifIsVowel(textList.get(3)),"Enter an");
+	}
+
+}
